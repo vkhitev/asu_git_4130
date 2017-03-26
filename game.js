@@ -49,7 +49,7 @@ Matrix = function (rows, columns) {
     var sin = Math.sin(rad) * scale;
     var cos = Math.cos(rad) * scale;
     this.set(cos, -sin, transx,
-             sin,  cos, transy);
+        sin,  cos, transy);
   };
 
   this.set = function () {
@@ -271,8 +271,8 @@ Sprite = function () {
   };
   this.checkCollision = function (other) {
     if (!other.visible ||
-         this == other ||
-         this.collidesWith.indexOf(other.name) == -1) return;
+        this == other ||
+        this.collidesWith.indexOf(other.name) == -1) return;
     var trans = other.transformedPoints();
     var px, py;
     var count = trans.length/2;
@@ -341,14 +341,14 @@ Sprite = function () {
       cn = this.grid[gridx][gridy];
     }
     return (cn.isEmpty(this.collidesWith) &&
-            cn.north.isEmpty(this.collidesWith) &&
-            cn.south.isEmpty(this.collidesWith) &&
-            cn.east.isEmpty(this.collidesWith) &&
-            cn.west.isEmpty(this.collidesWith) &&
-            cn.north.east.isEmpty(this.collidesWith) &&
-            cn.north.west.isEmpty(this.collidesWith) &&
-            cn.south.east.isEmpty(this.collidesWith) &&
-            cn.south.west.isEmpty(this.collidesWith));
+    cn.north.isEmpty(this.collidesWith) &&
+    cn.south.isEmpty(this.collidesWith) &&
+    cn.east.isEmpty(this.collidesWith) &&
+    cn.west.isEmpty(this.collidesWith) &&
+    cn.north.east.isEmpty(this.collidesWith) &&
+    cn.north.west.isEmpty(this.collidesWith) &&
+    cn.south.east.isEmpty(this.collidesWith) &&
+    cn.south.west.isEmpty(this.collidesWith));
   };
   this.wrapPostMove = function () {
     if (this.x > Game.canvasWidth) {
@@ -367,15 +367,15 @@ Sprite = function () {
 
 Ship = function () {
   this.init("ship",
-            [-5,   4,
-              0, -12,
-              5,   4]);
+      [-5,   4,
+        0, -12,
+        5,   4]);
 
   this.children.exhaust = new Sprite();
   this.children.exhaust.init("exhaust",
-                             [-3,  6,
-                               0, 11,
-                               3,  6]);
+      [-3,  6,
+        0, 11,
+        3,  6]);
 
   this.bulletCounter = 0;
 
@@ -397,7 +397,12 @@ Ship = function () {
       this.acc.x = 0.5 * Math.cos(rad);
       this.acc.y = 0.5 * Math.sin(rad);
       this.children.exhaust.visible = Math.random() > 0.1;
-    } else {
+    } else if (KEY_STATUS.down) {
+      var rad = ((this.rot-90) * Math.PI)/180;
+      this.acc.x = 0.1 * Math.cos(rad);
+      this.acc.y = 0.1 * Math.sin(rad);
+      this.children.exhaust.visible = Math.random() > 0.1;
+    }else {
       this.acc.x = 0;
       this.acc.y = 0;
       this.children.exhaust.visible = false;
@@ -450,29 +455,29 @@ Ship.prototype = new Sprite();
 
 BigAlien = function () {
   this.init("bigalien",
-            [-20,   0,
-             -12,  -4,
-              12,  -4,
-              20,   0,
-              12,   4,
-             -12,   4,
-             -20,   0,
-              20,   0]);
+      [-20,   0,
+        -12,  -4,
+        12,  -4,
+        20,   0,
+        12,   4,
+        -12,   4,
+        -20,   0,
+        20,   0]);
 
   this.children.top = new Sprite();
   this.children.top.init("bigalien_top",
-                         [-8, -4,
-                          -6, -6,
-                           6, -6,
-                           8, -4]);
+      [-8, -4,
+        -6, -6,
+        6, -6,
+        8, -4]);
   this.children.top.visible = true;
 
   this.children.bottom = new Sprite();
   this.children.bottom.init("bigalien_top",
-                            [ 8, 4,
-                              6, 6,
-                             -6, 6,
-                             -8, 4]);
+      [ 8, 4,
+        6, 6,
+        -6, 6,
+        -8, 4]);
   this.children.bottom.visible = true;
 
   this.collidesWith = ["asteroid", "ship", "bullet"];
@@ -637,17 +642,16 @@ AlienBullet.prototype = new Bullet();
 
 Asteroid = function () {
   this.init("asteroid",
-            [-10,   0,
-              -5,   7,
-              -3,   4,
-               1,  10,
-               5,   4,
-              10,   0,
-               5,  -6,
-               2, -10,
-              -4, -10,
-              -4,  -5]);
-
+      [-10,   0,
+        -5,   7,
+        -3,   4,
+        1,  10,
+        5,   4,
+        10,   0,
+        5,  -6,
+        2, -10,
+        -4, -10,
+        -4,  -5]);
   this.visible = true;
   this.scale = 6;
   this.postMove = this.wrapPostMove;
@@ -929,13 +933,13 @@ Game = {
         if (Game.sprites[i].name == 'asteroid') {
           Game.sprites[i].die();
         } else if (Game.sprites[i].name == 'bullet' ||
-                   Game.sprites[i].name == 'bigalien') {
+            Game.sprites[i].name == 'bigalien') {
           Game.sprites[i].visible = false;
         }
       }
 
       Game.score = 0;
-      Game.lives = 2;
+      Game.lives = 3;
       Game.totalAsteroids = 2;
       Game.spawnAsteroids();
 
@@ -1115,13 +1119,13 @@ $(function () {
   // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
   window.requestAnimFrame = (function () {
     return  window.requestAnimationFrame       ||
-            window.webkitRequestAnimationFrame ||
-            window.mozRequestAnimationFrame    ||
-            window.oRequestAnimationFrame      ||
-            window.msRequestAnimationFrame     ||
-            function (/* function */ callback, /* DOMElement */ element) {
-              window.setTimeout(callback, 1000 / 60);
-            };
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame    ||
+        window.oRequestAnimationFrame      ||
+        window.msRequestAnimationFrame     ||
+        function (/* function */ callback, /* DOMElement */ element) {
+          window.setTimeout(callback, 1000 / 60);
+        };
   })();
 
   var mainLoop = function () {
